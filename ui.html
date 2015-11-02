@@ -63,7 +63,16 @@
               <input type="date" class="form-control" placeholder="Date">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Object">
+              <input type="text" class="form-control" placeholder="Description">
+            </div>
+            <div class="form-group">
+              <select class="form-control">
+                <option>Payment</option>
+                <option>Check</option>
+                <option>Withdrawal</option>
+                <option>Transfer</option>
+                <option>Deposit</option>
+              </select>
             </div>
             <div class="form-group">
               <div class="input-group">
@@ -79,9 +88,13 @@
           <table class="table">
             <tbody>
               <tr>
-                <td>1 November 2015</td>
+                <td class="col-md-2">1 November 2015</td>
                 <td>Groceries</td>
-                <td>$50</td>
+                <td class="col-md-1">
+                  <span class="glyphicon glyphicon-credit-card" title="Payment"></span>
+                </td>
+                <td class="col-md-2">$50.00</td>
+                <td class="col-md-2">$920.00</td>
               </tr>
             </tbody>
           </table>
@@ -91,14 +104,22 @@
           <table class="table">
             <tbody>
               <tr>
-                <td>30 October</td>
+                <td class="col-md-2">30 October</td>
                 <td>Meadhall</td>
-                <td>$30</td>
+                <td class="col-md-1">
+                  <span class="glyphicon glyphicon-credit-card" title="Payment"></span>
+                </td>
+                <td class="col-md-2">$30.00</td>
+                <td class="col-md-2">$970.00</td>
               </tr>
               <tr>
-                <td>20 October</td>
+                <td class="col-md-2">20 October</td>
                 <td>Ballet class</td>
-                <td>$45</td>
+                <td class="col-md-1">
+                  <span class="glyphicon glyphicon-credit-card" title="Payment"></span>
+                </td>
+                <td class="col-md-2">$45.00</td>
+                <td class="col-md-2">$1000.00</td>
               </tr>
             </tbody>
           </table>

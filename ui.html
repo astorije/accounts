@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>MyAccounts</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+    <style>
+      body {
+        padding-top: 70px;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 51px;
+        bottom: 0;
+        background-color: #f8f8f8;
+        border-right: 1px solid #e7e7e7;
+        padding-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">MyAccounts</a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+
+        <form class="navbar-form navbar-right" role="search">
+          <div class="form-group has-feedback">
+            <input type="search" class="form-control" placeholder="Search...">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+          </div>
+        </form>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 sidebar">
+
+          <h4>Accounts</h4>
+
+          <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#">Checking account</a></li>
+            <li><a href="#">Savings account</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10">
+
+          <h3>Checking account</h3>
+
+          <form class="form-inline">
+            <div class="form-group">
+              <input type="date" class="form-control" placeholder="Date">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Object">
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">$</div>
+                <input type="number" class="form-control" placeholder="Amount">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-default">Add</button>
+          </form>
+
+          <h4>November 2015</h4>
+
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>1 November 2015</td>
+                <td>Groceries</td>
+                <td>$50</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>October 2015</h4>
+
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>30 October</td>
+                <td>Meadhall</td>
+                <td>$30</td>
+              </tr>
+              <tr>
+                <td>20 October</td>
+                <td>Ballet class</td>
+                <td>$45</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

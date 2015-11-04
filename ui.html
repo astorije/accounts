@@ -65,33 +65,61 @@
         </div>
 
         <div class="col-md-offset-3 col-md-9">
-
           <h3>Checking account</h3>
 
-          <form class="form-inline">
-            <div class="form-group">
-              <input type="date" class="form-control" placeholder="Date">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">Add a transaction</h4>
             </div>
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Description">
+            <div class="panel-body">
+              <form class="form">
+                <div class="row">
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <input type="date" class="form-control" placeholder="Date">
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <textarea class="form-control" rows="1" placeholder="Description"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <select class="form-control">
+                        <option>Payment</option>
+                        <option>Check</option>
+                        <option>Withdrawal</option>
+                        <option>Transfer</option>
+                        <option>Deposit</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="number" class="form-control" placeholder="Amount">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Add transaction</button>
+                  <button type="button" class="btn btn-link">More options...</button>
+                </div>
+
+              </form>
             </div>
-            <div class="form-group">
-              <select class="form-control">
-                <option>Payment</option>
-                <option>Check</option>
-                <option>Withdrawal</option>
-                <option>Transfer</option>
-                <option>Deposit</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-addon">$</div>
-                <input type="number" class="form-control" placeholder="Amount">
-              </div>
-            </div>
-            <button type="submit" class="btn btn-default">Add</button>
-          </form>
+          </div>
+
+          <div class="clearfix"></div>
 
           <h4>November 2015</h4>
 

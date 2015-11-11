@@ -23,12 +23,17 @@ var Operations = React.createClass({
     var lines = this.props.data.map(function (line) {
       return (
         <tr>
+          <td>
+            <a href="" onClick={this.remove(line)}>
+              <span className="glyphicon glyphicon-remove"></span>
+            </a>
+          </td>
           <td>{line.date}</td>
           <td>{line.description}</td>
           <td>{line.amount}</td>
         </tr>
       );
-    });
+    }.bind(this));
 
     return (
       <table className="table table-hover">
@@ -86,11 +91,20 @@ var OperationManager = React.createClass({
     operations.unshift(operation);
     this.setState({ data: operations });
   },
+  handleOperationRemove: function (line) {
+    var newOperations = this.state.data.filter(function (item) {
+      return item.date !== line.date ||
+        item.description !== line.description ||
+        item.amount !== line.amount;
+    });
+    this.setState({ data: newOperations });
+  },
   render: function () {
     return (
       <div>
         <OperationForm onOperationSubmit={this.handleOperationSubmit} />
-        <Operations data={this.state.data} />
+        <Operations data={this.state.data}
+          onRemove={this.handleOperationRemove} />
       </div>
     );
   }

@@ -1,0 +1,391 @@
+body {
+  font-family: 'Segoe UI', 'Lucida Grande','Ubuntu','sans-serif';
+  font-size: 14px;
+  overflow: hidden;
+}
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+button {
+  outline: 0;
+  cursor: pointer;
+}
+
+button:active, button:hover,
+a:active, a:hover,
+tr:active {
+  outline: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button.icon {
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 9px;
+  text-align: center;
+}
+
+button.icon i {
+  width: 18px;
+  text-align: center;
+}
+
+button.icon::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: "";
+  opacity: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+}
+
+button {
+  padding: 9.5px 15px;
+  background: gray;
+  border: 0;
+  display: inline-block;
+  position: relative;
+  color: white;
+  border-radius: 2px;
+}
+
+button.reset {
+  background: white;
+  color: gray;
+  /* Inner border */
+  box-shadow: inset 0px 0px 0px 1px silver;
+}
+
+button::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: "";
+  background-color: white;
+  border-radius: 2px;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  transition: width .2s, height .2s, top .2s, left .2s, opacity .2s;
+}
+
+button.reset::before {
+  background-color: black;
+}
+button.reset:hover::before {
+  opacity: .1;
+}
+button.reset:active::before {
+  opacity: 0;
+}
+
+button:hover::before {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: .3;
+}
+
+button:active::before {
+  opacity: .6;
+}
+
+#header {
+  height: 48px;
+  background-color: #333;
+  color: #ddd;
+}
+
+#header .profile {
+  float: right;
+}
+
+#header button {
+  border: 0;
+  height: 28px;
+  margin: 10px;
+  padding: 0;
+  overflow: hidden;
+}
+
+#header .profile img {
+  height: 100%;
+}
+
+#sidebar {
+  background-color: #333;
+  color: #ddd;
+  width: 200px;
+  position: absolute;
+  top: 48px;
+  bottom: 0;
+  overflow: auto;
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sidebar > ul > li > a {
+  font-weight: bold;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#sidebar a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  transition: background-color .2s;
+}
+
+#sidebar ul ul li:first-child a {
+  background-color: #666;
+}
+
+#sidebar a:hover {
+  background-color: gray;
+}
+
+#sidebar a:active {
+  background-color: #aaa;
+}
+
+#main {
+  margin-left: 200px;
+  margin-right: 400px;
+  transition: margin-right .2s;
+  overflow: auto;
+  position: absolute;
+  top: 48px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#main h1,
+#main h2,
+#main p {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#main.full {
+  margin-right: 0;
+}
+
+#main .balance {
+  /*margin: 15px;*/
+  /*padding: 5px 15px;
+  background: black;*/
+  /*float: right;*/
+  /*border-radius: 14px;
+  color: white;
+  font-size: 14px;
+  line-height: inherit;*/
+}
+
+#main .balance {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #999;
+  border-radius: 11px;
+}
+
+.add-entry {
+  margin: 15px;
+  float: right;
+}
+
+#main table {
+  width: 100%;
+}
+
+#main tr {
+  cursor: pointer;
+  transition: background-color .2s;
+}
+
+#main tr.removed {
+  display: none;
+}
+
+#main tr:nth-child(2n+1) {
+  background-color: #f8f8f8;
+}
+
+#main tr:nth-child(2n) {
+  background-color: #eee;
+}
+
+#main tr:hover {
+  background-color: silver;
+}
+
+#main tr:active {
+  background-color: #ddd;
+}
+
+#main td {
+  padding: 10px;
+}
+
+#main .date,
+#main .amount,
+#main .total {
+  width: 80px;
+}
+
+#main .description {
+  max-width: 42px; /* Mandatory arbitrary value to display the ellipsis... Sure... */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#item {
+  background-color: #eee;
+  width: 400px;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  bottom: 0;
+  overflow: auto;
+  transition: width .2s, opacity .2s;
+}
+
+#item.hidden {
+  width: 0;
+  opacity: 0;
+}
+
+.item-content {
+  margin: 15px;
+}
+
+.item-content input {
+  width: 100%;
+  color: black;
+  background: inherit;
+  outline: 0;
+  padding: 5px 0;
+
+  border: 0;
+  border-bottom: 1px solid silver;
+
+  transition: border-color .2s;
+}
+
+.item-content input:focus {
+  border-bottom: 1px solid black;
+}
+
+.item-content label {
+  font-size: .8em;
+}
+
+.item-content input[disabled] {
+  border: 0;
+  border-bottom: 1px solid transparent;
+}
+
+.close {
+  float: right;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+  color: black;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+}
+
+.close::before {
+  border-radius: 50%;
+  background-color: black;
+}
+
+.edit-buttons {
+  transition: opacity .2s, visibility .2s;
+}
+
+.edit-buttons.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.close:hover::before {
+  opacity: .1;
+}
+
+.close:active::before {
+  opacity: 0;
+}
+
+.mobile-menu-button {
+  display: none;
+}
+
+.flash {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -48px;
+  padding: 6px;
+  background-color: #eee;
+  text-align: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, visibility .2s, bottom .2s;
+}
+
+.flash.visible {
+  opacity: 1;
+  visibility: visible;
+  bottom: 0;
+}
+
+@media (max-width: 1024px) {
+  .mobile-menu-button {
+    display: inline-block;
+    color: white;
+    font-size: 24px;
+    line-height: 48px;
+    padding-left: 10px;
+  }
+
+  #sidebar {
+    width: 0;
+    z-index: 1000;
+    transition: width .2s;
+  }
+
+  #sidebar.visible {
+    width: 200px;
+  }
+
+  #main {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #item {
+    width: 100%;
+    background-color: white;
+  }
+}

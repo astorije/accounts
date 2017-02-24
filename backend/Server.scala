@@ -15,7 +15,6 @@ import scala.util.{Failure, Success}
 
 import sangria.renderer.SchemaRenderer
 
-
 object Server extends App {
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()

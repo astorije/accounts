@@ -1,8 +1,8 @@
-
-
-
 // import java.time._
 
+// Classes for Account and Transaction
+
+// Leaving out date of transaction for now
 // http://www.javapractices.com/topic/TopicAction.do?Id=13
 case class Transaction(id: Int, /*date: DateTime,*/ description: String, amount: BigDecimal)
 
@@ -10,11 +10,8 @@ case class Account(id: Int, name: String, transactions: List[Transaction]) {
   def total: BigDecimal = transactions.map(_.amount).sum
 }
 
-import sangria.macros.derive._
-import sangria.schema._
-
-
 object AccountRepo {
+  // Hardcoded list of accounts and transactions for now
   var accounts = List(
     Account(1, "Checking Account", List(
       Transaction(1, "MBTA", BigDecimal("22.5")),
@@ -31,9 +28,16 @@ class AccountRepo {
 
   def account(id: Int): Option[Account] = accounts.find(_.id == id)
 
-  def addTransaction(transaction: Transaction) = {
+  // Ideally, this would be `createTransaction(transactionInput: TransactionInput)`
+  // or `createTransaction(description: String, amount: BigDecimal)` so `id`
+  // can be generated here or lower in the stack (DB auto-increment, ...)
+  def createTransaction(transaction: Transaction) = { // FIXME
+    // Commenting out id generation until I find a way to get id-free input
     // val r = scala.util.Random
     // val transaction = Transaction(r.nextInt(10000), description, amount)
+
+    // For now, new transaction is added to first account. Later, an `accountId`
+    // argument will be given to the `createTransaction` mutation.
     AccountRepo.accounts = List(
       accounts(0).copy(transactions = transaction :: accounts(0).transactions),
       accounts(1)
@@ -42,6 +46,10 @@ class AccountRepo {
   }
 }
 
+// GraphQL definitions
+
+import sangria.macros.derive._
+import sangria.schema._
 // import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import sangria.marshalling.sprayJson._
 import spray.json._
@@ -61,7 +69,7 @@ object AccountSchema {
 
   val QueryType = ObjectType("Query", fields[AccountRepo, Unit](
     Field("account", OptionType(AccountType),
-      description = Some("Returns an account with specific `id`"),
+      description = Some("Returns an account for this id"),
       arguments = Id :: Nil,
       resolve = c ⇒ c.ctx.account(c.arg(Id))
     ),
@@ -74,14 +82,16 @@ object AccountSchema {
 
   implicit val transactionFormat = jsonFormat3(Transaction)
   val TransactionInputType = deriveInputObjectType[Transaction](
-    InputObjectTypeName("TransactionInput")
+    InputObjectTypeName("TransactionInput"),
+    ExcludeInputFields("id")
   )
   val TransactionArg = Argument("transaction", TransactionInputType)
 
   val MutationType = ObjectType("Mutation", fields[AccountRepo, Unit](
-    Field("addTransaction", TransactionType,
+    Field("createTransaction", TransactionType,
+      description = Some("Create a new transaction for the first account"),
       arguments = TransactionArg :: Nil,
-      resolve = c ⇒ c.ctx.addTransaction(
+      resolve = c ⇒ c.ctx.createTransaction(
         c.arg(TransactionArg)
       )
     )

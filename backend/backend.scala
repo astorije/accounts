@@ -55,7 +55,7 @@ class AccountRepo {
       amount = amount.getOrElse(t.amount)
     ))
     updatedTransaction.map((transaction: Transaction) =>
-      transaction :: AccountRepo.transactions.filter(_.id != id)
+      AccountRepo.transactions = transaction :: AccountRepo.transactions.filter(_.id != id)
     )
     updatedTransaction
   }

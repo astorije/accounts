@@ -61,10 +61,10 @@ class AccountRepo {
   }
 
   @GraphQLField
-  def updateTransaction(id: Int, description: String, amount: BigDecimal): Option[Transaction] = {
-    val updatedTransaction = transaction(id).map(_.copy(
-      description = description,
-      amount = amount
+  def updateTransaction(id: Int, description: Option[String], amount: Option[BigDecimal]): Option[Transaction] = {
+    val updatedTransaction = transaction(id).map(t => t.copy(
+      description = description.getOrElse(t.description),
+      amount = amount.getOrElse(t.amount)
     ))
     updatedTransaction.map((transaction: Transaction) =>
       AccountRepo.transactions = AccountRepo.transactions + (id -> transaction)

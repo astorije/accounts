@@ -1,3 +1,13 @@
+
+// GraphQL definitions
+
+import sangria.macros.derive._
+import sangria.schema._
+// import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import sangria.marshalling.sprayJson._
+import spray.json._
+import DefaultJsonProtocol._
+
 // import java.time._
 
 // Classes for Account and Transaction
@@ -5,9 +15,6 @@
 // Leaving out date of transaction for now
 // http://www.javapractices.com/topic/TopicAction.do?Id=13
 case class Transaction(id: Int, /*date: DateTime,*/ description: String, amount: BigDecimal)
-
-case class CreateTransaction(description: String, amount: BigDecimal)
-case class UpdateTransaction(id: Int, description: String, amount: BigDecimal)
 
 case class Account(id: Int, name: String, transactions: List[Transaction]) {
   def total: BigDecimal = transactions.map(_.amount).sum
@@ -30,20 +37,13 @@ object AccountRepo {
   )
 }
 
-case class TransactionInput(description: String, amount: BigDecimal)
-
 class AccountRepo {
   def accounts: List[Account] = AccountRepo.accounts
-
   def account(id: Int): Option[Account] = accounts.find(_.id == id)
-
   def transactions: List[Transaction] = AccountRepo.transactions.values.toList
-
   def transaction(id: Int): Option[Transaction] = AccountRepo.transactions.get(id)
 
-  // Ideally, this would be `createTransaction(transactionInput: TransactionInput)`
-  // or `createTransaction(description: String, amount: BigDecimal)` so `id`
-  // can be generated here or lower in the stack (DB auto-increment, ...)
+  @GraphQLField
   def createTransaction(description: String, amount: BigDecimal): Transaction = {
     // Commenting out id generation until I find a way to get id-free input
     val r = scala.util.Random
@@ -60,6 +60,7 @@ class AccountRepo {
     transaction
   }
 
+  @GraphQLField
   def updateTransaction(id: Int, description: String, amount: BigDecimal): Option[Transaction] = {
     val updatedTransaction = transaction(id).map(_.copy(
       description = description,
@@ -71,21 +72,13 @@ class AccountRepo {
     updatedTransaction
   }
 
+  @GraphQLField
   def deleteTransaction(id: Int): Option[Transaction] = {
     val t = transaction(id)
     AccountRepo.transactions = AccountRepo.transactions - id
     t
   }
 }
-
-// GraphQL definitions
-
-import sangria.macros.derive._
-import sangria.schema._
-// import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import sangria.marshalling.sprayJson._
-import spray.json._
-import DefaultJsonProtocol._
 
 object AccountSchema {
   val Id = Argument("id", IntType)
@@ -119,33 +112,7 @@ object AccountSchema {
     )
   ))
 
-  val DescriptionArg = Argument("description", StringType)
-  val AmountArg = Argument("amount", BigDecimalType)
-
-  val MutationType = ObjectType("Mutation", fields[AccountRepo, Unit](
-    Field("createTransaction", TransactionType,
-      description = Some("Create a new transaction for the first account"),
-      arguments = DescriptionArg :: AmountArg :: Nil,
-      resolve = c ⇒ c.ctx.createTransaction(
-        c.arg(DescriptionArg),
-        c.arg(AmountArg)
-      )
-    ),
-    Field("updateTransaction", OptionType(TransactionType),
-      arguments = Id :: DescriptionArg :: AmountArg :: Nil,
-      resolve = c => c.ctx.updateTransaction(
-        c.arg(Id),
-        c.arg(DescriptionArg),
-        c.arg(AmountArg)
-      )
-    ),
-    Field("deleteTransaction", OptionType(TransactionType),
-      arguments = Id :: Nil,
-      resolve = c => c.ctx.deleteTransaction(
-        c.arg(Id)
-      )
-    )
-  ))
+  val MutationType = deriveContextObjectType[AccountRepo, AccountRepo, Unit](identity)
 
   val schema = Schema(QueryType, Some(MutationType))
 }

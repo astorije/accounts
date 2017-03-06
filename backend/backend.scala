@@ -40,7 +40,6 @@ class AccountRepo {
   def account(id: Int): Option[Account] = accounts.find(_.id == id)
   def transaction(id: Int): Option[Transaction] = AccountRepo.transactions.find(_.id == id)
 
-  @GraphQLField
   def createTransaction(description: String, amount: BigDecimal, accountId: Int): Transaction = {
     val id = scala.util.Random.nextInt(10000)
     val transaction = Transaction(id, description, amount, accountId)
@@ -48,7 +47,6 @@ class AccountRepo {
     transaction
   }
 
-  @GraphQLField
   def updateTransaction(id: Int, description: Option[String], amount: Option[BigDecimal]): Option[Transaction] = {
     val updatedTransaction = transaction(id).map(t => t.copy(
       description = description.getOrElse(t.description),
@@ -60,7 +58,6 @@ class AccountRepo {
     updatedTransaction
   }
 
-  @GraphQLField
   def deleteTransaction(id: Int): Option[Transaction] = {
     val t = transaction(id)
     AccountRepo.transactions = AccountRepo.transactions.filter(_.id != id)
@@ -96,7 +93,10 @@ object AccountSchema {
     )
   ))
 
-  val MutationType = deriveContextObjectType[AccountRepo, AccountRepo, Unit](identity)
+  val MutationType = deriveContextObjectType[AccountRepo, AccountRepo, Unit](
+    identity,
+    IncludeMethods("createTransaction", "updateTransaction", "deleteTransaction")
+  )
 
   val schema = Schema(QueryType, Some(MutationType))
 }

@@ -15,7 +15,33 @@ import scala.util.{Failure, Success}
 
 import sangria.renderer.SchemaRenderer
 
+import slick.jdbc.H2Profile.api._
+import scala.concurrent.ExecutionContext.Implicits.global
+
 object Server extends App {
+  // Create fake DB data
+  val db = Database.forConfig("h2test")
+
+  val accounts = TableQuery[Accounts]
+  val transactions = TableQuery[Transactions]
+
+  val setup = DBIO.seq(
+    (accounts.schema ++ transactions.schema).create,
+    accounts ++= Seq(
+      Account(1, "Checking Account"),
+      Account(2, "Savings Account")
+    ),
+    transactions ++= Seq(
+      Transaction(1, "MBTA", BigDecimal("22.5"), 1),
+      Transaction(2, "Uber", BigDecimal("10.23"), 1),
+      Transaction(3, "Interests", BigDecimal("0.34"), 2)
+    )
+  )
+
+  val setupFuture = db.run(setup)
+
+  // END Create fake DB data
+
   implicit val system = ActorSystem("sangria-server")
   implicit val materializer = ActorMaterializer()
 
